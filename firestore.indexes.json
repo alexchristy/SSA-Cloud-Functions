@@ -1,0 +1,33 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "Textract_Jobs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "finished_72hr_processing",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "started_72hr_processing",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Textract_Jobs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "tables_parsed_finished",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "tables_parsed_started",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
