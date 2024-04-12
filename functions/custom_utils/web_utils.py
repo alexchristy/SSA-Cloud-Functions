@@ -1,8 +1,9 @@
 import logging
 import time
 from typing import Optional
-import requests # type: ignore
+import requests  # type: ignore
 from urllib.parse import unquote, quote
+
 
 def ensure_url_encoded(url: str) -> str:
     """Ensure that the URL is encoded.
@@ -26,6 +27,7 @@ def ensure_url_encoded(url: str) -> str:
 
     # If the URLs are different, it was already encoded.
     return url
+
 
 def get_with_retry(url: str) -> Optional[requests.Response]:
     """Send a GET request to the given URL and retry if it fails.
@@ -76,30 +78,30 @@ def get_with_retry(url: str) -> Optional[requests.Response]:
 
     return None
 
-def save_image_in_cloudfare(api_token: str, account_id: str, cf_img_base_url: str,image_url_to_save: str) -> Optional[str]:
+
+def save_image_in_cloudfare(
+    api_token: str, account_id: str, cf_img_base_url: str, image_url_to_save: str
+) -> Optional[str]:
     """Save image to Cloudflare Images.
-    
+
     Args:
     ----
         api_token: The Cloudflare API token.
         account_id: The Cloudflare account ID.
         cf_img_base_url: The Cloudflare Images base URL.
         image_url_to_save: The URL of the image to save.
-        
+
     Returns:
     -------
         The URL of the saved image in Cloudflare Images.
     """
-    headers = {
-        "Authorization": f"Bearer {api_token}"
-    }
+    headers = {"Authorization": f"Bearer {api_token}"}
 
-    data = {
-        "url": image_url_to_save,
-        "requireSignedURLs": "false"
-    }
+    data = {"url": image_url_to_save, "requireSignedURLs": "false"}
 
-    api_endpoint_url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/images/v1"
+    api_endpoint_url = (
+        f"https://api.cloudflare.com/client/v4/accounts/{account_id}/images/v1"
+    )
     logging.info("Sending POST request to %s", api_endpoint_url)
 
     response = requests.post(api_endpoint_url, headers=headers, files=data)
@@ -107,7 +109,7 @@ def save_image_in_cloudfare(api_token: str, account_id: str, cf_img_base_url: st
     if response.status_code != 200:
         logging.error("Failed to save image in Cloudflare Images: %s", response.text)
         return None
-    
+
     image_id = response.json()["result"]["id"]
 
-    return f"{cf_img_base_url}/{image_id}/"
+    return f"{cf_img_base_url}{image_id}/"
